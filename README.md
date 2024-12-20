@@ -1,1 +1,1 @@
-"# Rice_Mill-Project_smartBridge" 
+# Rice_Mill-Project_smartBridge
