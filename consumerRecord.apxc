@@ -1,0 +1,41 @@
+public class ConsumerRecord {
+    public static void sendEmailNotification(List<consumer__c> consumers) {
+        // Check if the list is empty
+        if (consumers == null || consumers.isEmpty()) {
+            return;
+        }
+
+        // List to hold email messages
+        List<Messaging.SingleEmailMessage> emails = new List<Messaging.SingleEmailMessage>();
+
+        for (consumer__c c : consumers) {
+            // Check if email field is not null
+            if (c.email__c != null) {
+                Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+
+                // Set email recipient, subject, and body
+                email.setToAddresses(new List<String>{c.email__c});
+                email.setSubject('Welcome to Our Company!');
+                email.setPlainTextBody('Dear ' + c.Name + ',\n\n' +
+                    'Welcome to MY RICE!\n\n' +
+                    'You have been recognized as a valuable customer to us. Please continue your journey with us as we strive to provide high-quality resources.\n\n' +
+                    'We are proud to associate with customers like you and look forward to offering exciting discounts and product offers.\n\n' +
+                    'Thank you for choosing us! Here are some recommended products based on your recent purchases.\n\n' +
+                    'Best regards,\n' +
+                    'The MY RICE Team');
+
+                // Add email to the list
+                emails.add(email);
+            }
+        }
+
+        // Send emails in bulk
+        if (!emails.isEmpty()) {
+            try {
+                Messaging.sendEmail(emails);
+            } catch (Exception e) {
+                System.debug('Email sending failed: ' + e.getMessage());
+            }
+        }
+    }
+}
